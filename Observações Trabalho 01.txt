@@ -1,0 +1,5 @@
+- Leitura do Arquivo + ou -
+- Busca Binária - Não
+- Separação das Palavras - Ok
+- Organização - Não
+- Case Insensitive - Ok
