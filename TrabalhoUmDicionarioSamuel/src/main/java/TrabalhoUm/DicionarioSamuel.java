@@ -33,31 +33,55 @@ public class DicionarioSamuel {
 
         File text = new File("TextoBase.txt");
         Scanner reader = new Scanner(text);
-        String list = reader.nextLine();
+
+        String list = reader.nextLine().replaceAll("", " ");
+        String listTest = "";
+
+        System.out.println(list);
         int listSize = list.length();
+
         System.out.println("Contador: " + listSize);
 
         String wordList[] = new String[listSize];
 
+        int count = 0;
+
+        // gravando informações no vetor
         for (int i = 0; i < wordList.length; i++) {
-            if (reader.hasNextLine()) {
-                wordList[i] = reader.next();
-                wordList[i] = wordList[i].toLowerCase();
 
-                if (i > 0) {
+            wordList[i] = reader.next();
+            wordList[i] = wordList[i].toLowerCase();
 
-                    String aux = "";
+            System.out.println("Gravação: " + wordList[i]);
 
-                    if (wordList[i].compareTo(wordList[i - 1]) > 0) {
-                        aux = wordList[i];
-                        wordList[i] = wordList[i - 1];
-                        wordList[i - 1] = aux;
-
-                    }
-                }
+            if (i > 0) {
+                insertionSort(wordList, count);
             }
+
+            count++;
         }
+
         return wordList;
+
+    }
+
+    public static String[] insertionSort(String[] wordList, int count) {
+
+        for (int i = 1; i < count; i++) {
+            int j = i;
+            System.out.println(wordList.length);
+
+            String x = wordList[j];
+            System.out.println("X: " + x);
+            while (j > 0 && wordList[j].compareTo(wordList[j - 1]) < 0) {
+                wordList[j] = wordList[j - 1];
+                j--;
+            }
+            wordList[j] = x;
+        }
+
+        return wordList;
+
     }
 
     /* public static String[] readText() throws FileNotFoundException, IOException {
@@ -100,17 +124,13 @@ public class DicionarioSamuel {
 
     }
      */
-
-    public static int binarySearch(int wordList[], int num) {
+ /* public static String binarySearch(String wordList[], String word) {
         int i, m, f;
         i = 0;
         f = wordList.length - 1;
         while (i <= f) {
             m = (i + f) / 2;
-            if (wordList[m] == num) {
-                return num;
-            }
-            if (num < wordList[m]) {
+            if (wordList[m].compareTo(word) == 0) {
                 f = m - 1;
             } else {
                 i = m + 1;
@@ -118,8 +138,7 @@ public class DicionarioSamuel {
         }
 
         return -1;
-    }
-
+    } */
     public static void printDictionary(String wordList[]) {
 
         for (int i = 0; i < wordList.length; i++) {
