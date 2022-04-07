@@ -26,21 +26,35 @@ não disponibilizamos nossas respostas para colegas externos ao grupo e
 não realizamos quaisquer outras atividades desonestas para nos beneficiar ou
 prejudicar outros.
  */
-
 public class DicionarioSamuel {
 
-    public static String[] readText() throws FileNotFoundException {
+    public static String[] readText() throws FileNotFoundException, IOException {
 
         File text = new File("TextoBase.txt");
         Scanner reader = new Scanner(text);
+        
+        // Possível Solução.
 
+        /*File file = new File("TextoBase.txt");    //creates a new file instance  
+        FileReader fr = new FileReader(file);   //reads the file  
+        BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream  
+        StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters  
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        fr.close();
+
+        */
+        
         String list = reader.nextLine().replaceAll("", " ");
         String listTest = "";
 
-        System.out.println(list);
+        //System.out.println(list);
         int listSize = list.length();
 
-        System.out.println("Contador: " + listSize);
+        //System.out.println("Contador: " + listSize);
 
         String wordList[] = new String[listSize];
 
@@ -52,7 +66,7 @@ public class DicionarioSamuel {
             wordList[i] = reader.next();
             wordList[i] = wordList[i].toLowerCase();
 
-            System.out.println("Gravação: " + wordList[i]);
+            //System.out.println("Gravação: " + wordList[i]);
 
             if (i > 0) {
                 insertionSort(wordList, count);
@@ -69,10 +83,10 @@ public class DicionarioSamuel {
 
         for (int i = 1; i < count; i++) {
             int j = i;
-            System.out.println(wordList.length);
+            //System.out.println(wordList.length);
 
             String x = wordList[j];
-            System.out.println("X: " + x);
+            //System.out.println("X: " + x);
             while (j > 0 && wordList[j].compareTo(wordList[j - 1]) < 0) {
                 wordList[j] = wordList[j - 1];
                 j--;
@@ -143,7 +157,7 @@ public class DicionarioSamuel {
 
         for (int i = 0; i < wordList.length; i++) {
 
-            System.out.println(wordList[i]);
+            //System.out.println(wordList[i]);
 
         }
     }
