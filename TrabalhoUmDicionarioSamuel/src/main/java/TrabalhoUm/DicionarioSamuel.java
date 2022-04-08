@@ -4,10 +4,8 @@
  */
 package TrabalhoUm;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -28,144 +26,78 @@ prejudicar outros.
  */
 public class DicionarioSamuel {
 
-    public static String[] readText() throws FileNotFoundException, IOException {
+    public static String[] readText(String[] wordList) throws FileNotFoundException {
 
         File text = new File("TextoBase.txt");
         Scanner reader = new Scanner(text);
-        
-        // Possível Solução.
+        String list = " ";
+        String searchWord = "";
+        String[] dictionary = {};
 
-        /*File file = new File("TextoBase.txt");    //creates a new file instance  
-        FileReader fr = new FileReader(file);   //reads the file  
-        BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream  
-        StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters  
-        String line;
+        while (reader.hasNextLine()) {
 
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-        fr.close();
-
-        */
-        
-        String list = reader.nextLine().replaceAll("", " ");
-        String listTest = "";
-
-        //System.out.println(list);
-        int listSize = list.length();
-
-        //System.out.println("Contador: " + listSize);
-
-        String wordList[] = new String[listSize];
-
-        int count = 0;
-
-        // gravando informações no vetor
-        for (int i = 0; i < wordList.length; i++) {
-
-            wordList[i] = reader.next();
-            wordList[i] = wordList[i].toLowerCase();
-
-            //System.out.println("Gravação: " + wordList[i]);
-
-            if (i > 0) {
-                insertionSort(wordList, count);
-            }
-
-            count++;
-        }
-
-        return wordList;
-
-    }
-
-    public static String[] insertionSort(String[] wordList, int count) {
-
-        for (int i = 1; i < count; i++) {
-            int j = i;
-            //System.out.println(wordList.length);
-
-            String x = wordList[j];
-            //System.out.println("X: " + x);
-            while (j > 0 && wordList[j].compareTo(wordList[j - 1]) < 0) {
-                wordList[j] = wordList[j - 1];
-                j--;
-            }
-            wordList[j] = x;
-        }
-
-        return wordList;
-
-    }
-
-    /* public static String[] readText() throws FileNotFoundException, IOException {
-
-        FileReader file = new FileReader("TextoBase.txt");
-        BufferedReader reader = new BufferedReader(file);
-
-        String line1 = reader.readLine();
-        String line2 = reader.readLine();
-        String line3 = reader.readLine();
-        String line4 = reader.readLine();
-
-        String fullText = (line1 + " " + line2 + " " + line3 + " " + line4);
-
-        int size = Integer.parseInt(fullText);
-
-        reader.close();
-
-        String[] wordList = new String[size];
-
-        wordList = fullText.split("");
-
-        for (int i = 0; i < wordList.length; i++) {
-
-            if (i > 0) {
-
-                String aux = "";
-
-                if (wordList[i].compareTo(wordList[i - 1]) < 0) {
-
-                    aux = wordList[i];
-                    wordList[i] = wordList[i - 1];
-                    wordList[i - 1] = aux;
-
+            // Alterar estrutura de gravação *.
+            // 
+            
+            list = reader.nextLine();
+            wordList = list.toLowerCase().split(" ");
+            for (int i = 0; i < wordList.length; i++) {
+                searchWord = wordList[i];
+                if (binarySearch(wordList, searchWord)) {
+                    /* *** */
+                    if (i > 0) {
+                        if (dictionary[i].compareTo(dictionary[i - 1]) > 0) {
+                            dictionary[i] = searchWord;
+                        } else {
+                            if (i > 0) {
+                                searchWord = dictionary[i];
+                                dictionary[i] = wordList[i - 1];
+                                dictionary[i - 1] = searchWord;
+                            }
+                        }
+                    }
                 }
+
             }
         }
 
-        return wordList;
-
+        return dictionary;
     }
-     */
- /* public static String binarySearch(String wordList[], String word) {
+
+    public static boolean binarySearch(String wordList[], String searchWord) {
         int i, m, f;
         i = 0;
         f = wordList.length - 1;
         while (i <= f) {
             m = (i + f) / 2;
-            if (wordList[m].compareTo(word) == 0) {
+            if (wordList[m].compareTo(searchWord) == 0) {
+                return false;
+            }
+            if (wordList[m].compareTo(searchWord) > 0) {
                 f = m - 1;
             } else {
                 i = m + 1;
             }
         }
 
-        return -1;
-    } */
-    public static void printDictionary(String wordList[]) {
+        return true;
 
-        for (int i = 0; i < wordList.length; i++) {
+    }
 
-            //System.out.println(wordList[i]);
+    public static void printDictionary(String dictionary[]) {
+
+        for (int i = 0; i < dictionary.length; i++) {
+
+            System.out.println(dictionary[i]);
 
         }
     }
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        String wordList[] = readText();
-        printDictionary(wordList);
+        String[] wordList = new String[1000];
+        String[] dictionary = readText(wordList);
+        printDictionary(dictionary);
 
     }
 
