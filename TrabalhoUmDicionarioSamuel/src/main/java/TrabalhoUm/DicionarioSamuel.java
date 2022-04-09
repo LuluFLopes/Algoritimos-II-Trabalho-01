@@ -26,58 +26,96 @@ prejudicar outros.
  */
 public class DicionarioSamuel {
 
+    static String dictionary[] = {};
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+
+        String[] wordList = new String[1000];
+        String[] dictionary = readText(wordList);
+        printDictionary(dictionary);
+
+    }
+
     public static String[] readText(String[] wordList) throws FileNotFoundException {
 
         File text = new File("TextoBase.txt");
         Scanner reader = new Scanner(text);
         String list = " ";
         String searchWord = "";
-        String[] dictionary = {};
 
+        //String dictionary[] = {"carro", "bola", "suco", "menino"};
+
+        /*// Teste Busca Binária
+        for (int i = 0; i < dictionary.length; i++) {
+            int j = i;
+            String x = dictionary[j];
+            System.out.println("X: " + x);
+            while (j > 0 && x.compareTo(dictionary[j - 1]) < 0) {
+                dictionary[j] = dictionary[j - 1];
+                j--;
+            }
+            dictionary[j] = x;
+        }*/
+
+
+        // Alterar estrutura de gravação *.
+        list += reader.nextLine();
+        wordList = list.toLowerCase().split(" ");
+        int vectorIndex = 0;
+        vectorIndex += wordList.length;
+        String dictionary[] = new String[vectorIndex];
+
+        // Tentar gravar tudo de uma vez **
+
+        return wordList;
+
+    }
+
+    public static String[] insertionFunction(String[] dictionary, Scanner reader, String list) throws FileNotFoundException {
         while (reader.hasNextLine()) {
-
-            // Alterar estrutura de gravação *.
-            // 
+              
+            String[] wordList = {};
+            wordList = readText(wordList);
             
-            list = reader.nextLine();
-            wordList = list.toLowerCase().split(" ");
-            for (int i = 0; i < wordList.length; i++) {
-                searchWord = wordList[i];
-                if (binarySearch(wordList, searchWord)) {
-                    /* *** */
-                    if (i > 0) {
-                        if (dictionary[i].compareTo(dictionary[i - 1]) > 0) {
-                            dictionary[i] = searchWord;
-                        } else {
-                            if (i > 0) {
-                                searchWord = dictionary[i];
-                                dictionary[i] = wordList[i - 1];
-                                dictionary[i - 1] = searchWord;
-                            }
-                        }
-                    }
-                }
+            int count = 0;
 
+            if (list != null) {
+                for (int i = 0; i < wordList.length; i++) {
+                    int j = count;
+                    dictionary[j] = wordList[i];
+                    //System.out.println("Posição Atual1: " + dictionary[j]);
+                    String x = dictionary[j];
+                    while (j > 0 && x.compareTo(dictionary[j - 1]) < 0) {
+                        dictionary[j] = dictionary[j - 1];
+                        j--;
+                        //System.out.println("Posição Atual2: " + dictionary[j]);
+                    }
+                    dictionary[j] = x;
+                    count++;
+                }
             }
         }
-
         return dictionary;
     }
 
-    public static boolean binarySearch(String wordList[], String searchWord) {
+    public static boolean binarySearch(String dictionary[], String x) {
         int i, m, f;
         i = 0;
-        f = wordList.length - 1;
+        f = dictionary.length - 1;
+        System.out.println("Tamanho Dicionário: " + dictionary.length);
         while (i <= f) {
             m = (i + f) / 2;
-            if (wordList[m].compareTo(searchWord) == 0) {
+            // Se a palavra comparada for igual a posição m.
+            if (dictionary[m].compareTo(x) == 0) {
                 return false;
-            }
-            if (wordList[m].compareTo(searchWord) > 0) {
+                // Se a palavra comparada for "menor" que a posição m.
+            } else if (dictionary[m].compareTo(x) > 0) {
                 f = m - 1;
+                // Se a palavra comparada for "maior" que a posição m.
             } else {
                 i = m + 1;
             }
+
         }
 
         return true;
@@ -91,14 +129,6 @@ public class DicionarioSamuel {
             System.out.println(dictionary[i]);
 
         }
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-
-        String[] wordList = new String[1000];
-        String[] dictionary = readText(wordList);
-        printDictionary(dictionary);
-
     }
 
 }
