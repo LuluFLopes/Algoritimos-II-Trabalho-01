@@ -1,5 +1,3 @@
-- Leitura do Arquivo + ou -
-- Busca Binária - Não
-- Separação das Palavras - Ok
-- Organização - Não
-- Case Insensitive - Ok
+- Leitura do Arquivo / Case Insensitive / Separação das Palavras - OK
+- Organização / Busca Binária - OK
+- Impressão do Dicionário / Contador - OK

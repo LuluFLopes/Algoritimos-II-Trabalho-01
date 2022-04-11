@@ -6,7 +6,6 @@ package TrabalhoUm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 /*
@@ -26,87 +25,73 @@ prejudicar outros.
  */
 public class DicionarioSamuel {
 
-    static String dictionary[] = {};
-
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-
-        String[] wordList = new String[1000];
-
-        String list = "";
-        //readText(wordList);
-        dictionary = insertNum(list);
-        printDictionary(dictionary);
-
+    public static void main(String[] args) throws FileNotFoundException {
+        String[] dictionary = new String[1000];
+        // Variável de referência para tamanho das buscas e quantidade de gravações.
+        int length = 0;
+        String[] list = readText();
+        // Busca cada palavra da lista.
+        for (String word : list) {
+            // Chamada do método de Busca Binária.
+            if (binarySearch(dictionary, word, length)) {
+                // Chamada do método de Inserção.
+                insertWord(dictionary, word, length);
+                // Variável aumentando conforme gravação no vetor "Dictionary".
+                length++;
+            }
+        }
+        // Chamada do método de impressão.
+        printDictionary(dictionary, length);
     }
 
-    public static String[] readText(String[] wordList) throws FileNotFoundException {
-
+    // Método faz a leitura de campos não nulos.
+    public static String[] readText() throws FileNotFoundException {
         File text = new File("TextoBase.txt");
         Scanner reader = new Scanner(text);
         String list = "";
-
+        // Valida se há mais linhas a ser lidas.
         while (reader.hasNextLine()) {
-
-            list += reader.nextLine() + " ";
-            wordList = list.toLowerCase().split(" ");
-
-        }
-
-        //printDictionary(wordList);
-        return wordList;
-
-    }
-
-    public static String[] insertNum(String list) throws FileNotFoundException {
-
-        // Inicializando Vetor "WordList".
-        String[] wordList = {};
-        // Rebecendo retorno da função "readText".
-        wordList = readText(wordList);
-        // Contador de J que fica fora do laço.
-        int count = 0;
-
-        for (int i = 0; i < wordList.length; i++) {
-            dictionary = addSize(dictionary);
-            int j = count;
-            String x = wordList[i];
-            dictionary[j] = wordList[i];
-            if (i > 0) {
-                if (binarySearch(dictionary, x) == false) {
-                    count--;
-                    j = count;
-                    dictionary[j] = wordList[i];
-                }
-                System.out.println("Conteúdo: " + dictionary[j]);
-                if (j > 0 && binarySearch(dictionary, x)) {
-                    String y = dictionary[j];
-                    while (j > 0 && y.compareTo(dictionary[j - 1]) < 0) {
-                        dictionary[j] = dictionary[j - 1];
-                        j--;
-                    }
-
-                    dictionary[j] = y;
+            String readChar = reader.nextLine();
+            // Valida se a linha é diferente de vazio.
+            if (!readChar.isEmpty()) {
+                String[] words = readChar.toLowerCase().split(" ");
+                for (String word : words) {
+                    list += " " + word;
                 }
             }
-
-            count++;
         }
-
-        return dictionary;
+        reader.close();
+        return list.trim().split(" ");
     }
 
-    public static boolean binarySearch(String dictionary[], String x) {
+    public static void insertWord(String[] dictionary, String word, int length) {
+        for (int i = 0; i < length; i++) {
+            // Compara se a variável "word" é lexicograficamente é menor que a posição atual do vetor "Dictionary".
+            if (word.compareTo(dictionary[i]) < 0) {
+                for (int j = length - 1; j >= i; j--) {
+                    // Faz a substituição das posições.
+                    dictionary[j + 1] = dictionary[j];
+                }
+                // Faz a substituição das posições.
+                dictionary[i] = word;
+                return;
+            }
+        }
+        // Faz a primeira gravação.
+        dictionary[length] = word;
+    }
+
+    public static boolean binarySearch(String[] dictionary, String word, int length) {
         int i, m, f;
         i = 0;
-        f = dictionary.length - 1;
+        f = length - 1; // Utilizamos a variável auxiliar para percorrer e não retornar nulo(Poblema que encontramos na resolução).
         while (i <= f) {
             m = (i + f) / 2;
             // Se a palavra comparada for igual a posição m.
-            System.out.println("Tamanho: " + dictionary.length + "/ M: " + m + "/ Conteúdo: " + dictionary[0]);
-            if (dictionary[m].compareTo(x) == 0) {
+            if (dictionary[m].compareTo(word) == 0) {
                 return false;
                 // Se a palavra comparada for "menor" que a posição m.
-            } else if (dictionary[m].compareTo(x) > 0) {
+            } else if (dictionary[m].compareTo(word) > 0) {
                 f = m - 1;
                 // Se a palavra comparada for "maior" que a posição m.
             } else {
@@ -116,38 +101,11 @@ public class DicionarioSamuel {
         return true;
     }
 
-    public static String[] addSize(String dictionary[]) {
-
-        String switchVector[] = dictionary;
-        String switchVector2[] = new String[dictionary.length + 1];
-        dictionary = switchVector2;
-
-        for (int i = 0; i < switchVector.length; i++) {
-
-            dictionary[i] = switchVector[i];
-
-        }
-
-        return dictionary;
-
-    }
-
-    public static void printWordList(String wordList[]) {
-
-        for (int i = 0; i < wordList.length; i++) {
-
-            System.out.println(wordList[i]);
-
-        }
-    }
-
-    public static void printDictionary(String dictionary[]) {
-
-        for (int i = 0; i < dictionary.length; i++) {
-
+    // Função que faz a impressão dos valores dentro do dicionário e contador de gravações.
+    public static void printDictionary(String[] dictionary, int length) {
+        for (int i = 0; i < length; i++) {
             System.out.println(dictionary[i]);
-
         }
+        System.out.println("total de palavras diferentes no dicionario = " + length);
     }
-
 }
